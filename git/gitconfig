@@ -1,0 +1,225 @@
+[credential]
+    # Remember login credentials (in seconds)
+    helper = cache --timeout=3000
+[push]
+    # Only push your current local branch
+    default = current
+[commit]
+    template = ~/.others/commit-template.txt
+[core]
+    editor = vim
+    excludesfile = ~/.others/.gitignore
+    pager = "diff-so-fancy | less --tabs=4 -RFX"
+[color]
+    ui = auto
+    [color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+    [color "diff"]
+        meta = yellow
+        frag = magenta
+        old = red
+        new = green
+        whitespace = red reverse
+    [color "status"]
+        added = green
+        changed = yellow
+        untracked = cyan
+[diff]
+    submodule = log
+[http]
+    #In case we don't want to use ssh for a local network.
+    #sslVerify = false
+[pager]
+    diff-std = less
+[alias]
+    st = status
+    co = checkout
+    cp = cherry-pick
+    ci = commit
+    me = merge
+    cia = commit -a
+    br = branch
+    brd = branch -d
+    brD = branch -D
+    ps = push
+    pl = pull
+    coo = !git fetch && git checkout
+    cob = checkout -b
+    aa = add -A
+    aaci = !git add -A && git commit
+    download = clone --depth=1
+    # See changes between HEAD and previous commit. All files, and one file.
+    diffc = diff HEAD^ HEAD
+    diffc1 = "!f() { git diff HEAD^:\"$1\" HEAD:\"$1\" ;}; f"
+
+    # Git diff using less
+    diff-std = diff
+    
+    #Show tags for current commit
+    wtag = describe --tags
+    
+    # Discard changes in a (list of) file(s) in working tree
+    discard = checkout --
+    
+    #Edits the commit message
+    amend = commit --amend
+    
+    #Common branches
+    cod = checkout develop
+    coi = checkout integration
+    com = checkout master
+    coa = checkout develop_architecture
+    dev = !git fetch --all && git checkout develop && git pull
+    int = !git fetch --all && git checkout integration && git pull
+    mas = !git fetch --all && git checkout master && git pull
+    arc = !git fetch --all && git checkout develop_architecture && git pull
+    arcb = git branch --list -a 'origin/architecture/*' --no-merged
+    ftb = git branch --list -a 'origin/feature/*' --no-merged
+    
+    #Quickly create feature branches 'feature/xxxx'
+    ft = "!f() { git checkout -b feature'/'\"$1\" ; }; f"
+    
+    #-------------------------
+    #  Removing and resetting |
+    #-------------------------
+    
+    # Discard changes in a (list of) file(s) in working tree
+    discard = checkout --
+    
+    #Removes local changes
+    rh = reset --hard
+
+    #Resets everything on a given repository. You will lose all untracked, tracked, ignored and hidden files.
+    restore = !git clean -fxdf && git reset --hard && git checkout -f -- .
+    restore-su = !git submodule foreach --recursive 'git clean -fdxf && git reset --hard && git checkout -f -- .'
+    nuke = !git restore && git restore-su
+    
+    #Undo things
+    uncommit = reset --soft HEAD^
+    unadd = reset HEAD
+    unstage = reset HEAD
+    
+    #Delete merged branches
+    dmerged = "git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    
+    #------------------------
+    #  Submodule management |
+    #------------------------
+
+    su = submodule update --init --recursive
+    sup = pull --recurse-submodules
+    sur = submodule foreach --recursive
+    suc = submodule foreach --recursive git fetch && git checkout 
+    sudev = submodule foreach --recursive  'git fetch && git checkout develop && git pull'
+    suint = submodule foreach --recursive  'git fetch && git checkout integration && git pull'
+    sumas = submodule foreach --recursive  'git fetch && git checkout master && git pull'
+    
+    #Updated remote urls from gitmodules
+    ss = submodule sync
+
+    #-----------------------
+    #  Git logs             | 
+    #-----------------------
+    
+    #My default git log graph
+    lg = !"git lg1"
+    
+    #Git log listing files modified. To improve coloring.
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+
+    #Git graph detailed and well formated
+    lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+
+    # More complete form
+    lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+
+    #------------------------
+    #  Search and files     |
+    #------------------------    
+
+    # Find a string inside files
+    gr = grep -Ii
+    
+    # Find a file by name in the hole repository
+    f = "!git ls-files | grep -i"
+    
+    # ls-files - show information about files in the index and the working tree; like Unix "ls" command.
+    ls = ls-files
+    
+    # ls-ignored -  list files that git has ignored.
+    ls-ignored = ls-files --others --i --exclude-standard
+    
+    # Outputs diff of changes not in a comment block and ignoring whitespaces of a given dir or file
+    diffh = ! "                      \
+    f () {                           \
+        rg='[+-]\\s\\*.*' ;      \
+        git diff -w $1 |         \
+        grep -v $rg ;            \
+    }; f"
+    
+    # List branches where the commit is present 'git where <hash>'
+    where = branch -a --contains
+    #----------------
+    #  Misc aliases |
+    #----------------
+    
+    stashes = stash list
+    
+    #Index management
+    hide = update-index --assume-unchanged
+    unhide = update-index --no-assume-unchanged
+    hidden = !git ls-files -v|grep '^h'
+    
+    #Return the directory of the repository
+    pwd = rev-parse --show-toplevel
+    
+    # Show our defined alias list
+    aliases = "!git config --get-regexp '^alias\\.' | cut -c 7- | sed 's/ / = /'"
+    
+    # Get the branch name
+    branch-name = rev-parse --abbrev-ref HEAD
+    
+    # Get the upstream branch name
+    upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD)
+    
+    # reflog - reference log that manages when tips of branches are updated.
+    rl = reflog
+    
+    # Clone with a template with pre-defined hooks (a template folder is needed in the system)
+    clonet = clone --template ~/others/repotemplate
+    
+    #----------------
+    #  Git hooks    |
+    #----------------
+    # Quickly edit or add a hook and give it ex permission.
+    hook-postcheckout = "!$EDITOR .git/hooks/post-checkout && chmod +x .git/hooks/post-checkout && echo 'Hook post-checkout created and +x permission granted';"
+    hook-prepush = "!$EDITOR .git/hooks/pre-push && chmod +x .git/hooks/pre-push && echo 'Hook pre-push created and +x permission granted';"
+    
+    #----------------
+    #  Archived     |
+    #----------------
+    # Others I dont usually use.
+    plo = pull origin 
+    plod = pull origin develop
+    plom = pull origin master
+    ploh = pull origin HEAD
+
+    
+    #----------------
+    #  Pending      |
+    #----------------
+    
+    la = "!git config -l | grep alias | cut -c 7-"
+    
+    # Add an alias. Doesnt work?
+    add-alias = "!f() { [ $# = 3 ] && git config $1 alias.\"$2\" \"$3\" && return 0 || echo \"Usage: git add-(local|global)-alias <new alias> <original command>\" >&2 && return 1; }; f"
+    add-global-alias = "!git add-alias --global"
+    add-local-alias = "!git add-alias --local"
+    
+    #Launch a shell command from top level directory of the repository
+    #TODO
+    
+    
+    #Inspiration: https://github.com/GitAlias/gitalias/blob/master/gitalias.txt

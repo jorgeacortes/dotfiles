@@ -1,0 +1,83 @@
+#--------------------------
+#  Prompt config          |
+#--------------------------
+
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+PS1="\[\e[1m\e[48;5;26m\e[97m\]\A \u@\h \[\e[0m" #  H:min with username@host and arrow with blue background
+PS1+="\e[1m\e[92m\]\w\[\e[0m" #                     Working directory in green
+PS1+="\e[93m\]\$(parse_git_branch)\[\e[0m\]" #      Git branch in yellow
+PS1+=" \n" #                                        New line
+PS1+="\[\e[1m\e[92m\]$ \[\e[0m" #                   Green arrow
+export PS1
+
+PS2="\[\e[1m\e[92m\]$ \[\e[0m" #                   Green arrow
+export PS2
+
+#--------------------------
+#  General aliases        |
+#--------------------------
+alias ls='ls --color=auto'
+alias py='python3'
+
+# alias ll='exa -la --git'
+# alias la='exa -la'
+# alias l='exa'
+exatree(){
+exa -T --level="$1" ${2+"$2"}
+}
+alias lt=exatree
+
+#--------------------------
+#  Navigation aliases     |
+#--------------------------
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+alias bin='cd ~/bin'
+alias others='cd ~/.others'
+alias www='cd /var/www'
+
+#--------------------------
+#  Git related aliases    |
+#--------------------------
+
+alias gs='git status'
+alias gss='git submodule foreach git status'
+alias ga='git add -A && git commit'
+alias gf='git fetch --all && git submodule foreach git fetch --all'
+alias gp='git pull --all'
+alias fetch='git fetch'
+alias push='git push'
+alias pull='git pull'
+alias diff='git diff'
+alias log='git log'
+
+ghclone() {
+  git clone "git@github.com:$1.git"
+}
+
+#--------------------------
+#  Local aliases  	      |
+#--------------------------
+# Intended for creating machine-dependent aliases for navigation
+
+# include .bash_local if it exists
+if [ -f $HOME/.bash_local ]; then
+    . $HOME/.bash_local
+fi
+
+#--------------------------
+#  Other config           |
+#--------------------------
+
+# Global variables
+export EDITOR=vim
+export PATH="$HOME/bin:$HOME/.cargo/bin:$PATH:$HOME/.others"
+
+# z.lua script run
+# eval "$(lua ~/bin/z.lua --init bash)"

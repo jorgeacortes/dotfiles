@@ -1,0 +1,15 @@
+# Include here all machine-dependent aliases or bash config
+
+#--------------------------
+#  Navigation aliases     |
+#--------------------------
+
+
+
+#--------------------------
+#  Others                 |
+#--------------------------
+
+# ssh setup, uncomment and add required keys
+# eval `ssh-agent`
+# ssh-add ~/.ssh/example
