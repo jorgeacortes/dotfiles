@@ -1,10 +1,9 @@
 
 #<type>[optional scope]: <description> + 1 Empty line
 
-
 #[optional body]
-#[optional BREAKING CHANGE]: <description>
 
+#[optional BREAKING CHANGE]: <description>
 
 #[optional footer] [Ticket IDs]
 

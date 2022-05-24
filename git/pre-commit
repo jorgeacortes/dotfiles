@@ -1,0 +1,19 @@
+#!/bin/bash
+# Global user pre-commit hooks
+
+source ${GITHOOKS_PATH}/common.sh
+
+EXECUTE=1
+
+if [[ $IS_IN_EXCEPTIONS = 1 ]]; then
+    EXECUTE=0
+    echo "pre-commit: not running because project is in exceptions list"
+fi
+
+# Execute hook
+if [[ $EXECUTE = 1 ]]; then
+    # Add hook here
+    echo "pre-commit: nothing to do!"
+fi
+
+exit 0

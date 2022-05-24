@@ -1,0 +1,27 @@
+#!/bin/bash
+# Global user pre-push hooks
+
+source ${GITHOOKS_PATH}/common.sh
+
+EXECUTE=1
+
+# Exception: avoid pushing branches starting with "local/"
+LOCAL_REGEX='^local\/'
+if [[ $GIT_BRANCH =~ $LOCAL_REGEX ]]; then
+    EXECUTE=0
+    echo "pre-push: Aborting push due to blacklisted branch \"$GIT_BRANCH\""
+    exit 1
+fi
+
+if [[ $IS_IN_EXCEPTIONS = 1 ]]; then
+    EXECUTE=0
+    echo "pre-push: not running because project is in exceptions list"
+fi
+
+# Execute hook
+if [[ $EXECUTE = 1 ]]; then
+    # Add hook here
+    echo "pre-push: nothing to do!"
+fi
+
+exit 0

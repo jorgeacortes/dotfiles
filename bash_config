@@ -78,6 +78,7 @@ fi
 # Global variables
 export EDITOR=vim
 export PATH="$HOME/bin:$HOME/.cargo/bin:$PATH:$HOME/.others"
+export GITHOOKS_PATH="$HOME/.others/githooks"
 
 # z.lua script run
 # eval "$(lua ~/bin/z.lua --init bash)"

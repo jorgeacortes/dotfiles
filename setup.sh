@@ -3,6 +3,7 @@
 # Automatic setup of bash, git  and other config in a linux machine
 
 echo "Configuring environment"
+INSTALL_FOLDER=~/.others
 
 echo "Copying .bash_config"
 cp -bf bash_config ~/.bash_config
@@ -29,23 +30,40 @@ curl -O https://raw.githubusercontent.com/tomasiser/vim-code-dark/master/colors/
 cp -f codedark.vim ~/.vim/colors/codedark.vim
 
 # Custom path folder
-echo "Creating custom folder for adding custom items to PATH ~/.others"
-if [ -f ~/.others ]; then
-    echo "~/.others already exists."
+echo "Creating custom folder for adding custom items to PATH ${INSTALL_FOLDER}"
+if [ -f ${INSTALL_FOLDER} ]; then
+    echo "${INSTALL_FOLDER} already exists."
 else
-	mkdir ~/.others
+	mkdir ${INSTALL_FOLDER}
 fi
 
 # Git configuration
+GITHOOKS_FOLDER=${INSTALL_FOLDER}/githooks
+echo "Creating githooks folder at ${GITHOOKS_FOLDER}"
+if [ -f ${GITHOOKS_FOLDER} ]; then
+    echo "${GITHOOKS_FOLDER} already exists."
+else
+	mkdir ${GITHOOKS_FOLDER}
+fi
+
+echo "Copying global git hooks"
+cp -bf git/pre-push ${GITHOOKS_FOLDER}
+cp -bf git/pre-commit ${GITHOOKS_FOLDER}
+cp -bf git/common.sh ${GITHOOKS_FOLDER}
+chmod +x ${GITHOOKS_FOLDER}/pre-push
+chmod +x ${GITHOOKS_FOLDER}/pre-commit
+chmod +x ${GITHOOKS_FOLDER}/common.sh
+
 echo "Configuring git: .gitconfig, global .gitignore and commit-template"
-cp -bf git/commit-template.txt ~/.others
+cp -bf git/commit-template.txt ${INSTALL_FOLDER}
 cp -bf git/gitconfig ~/.gitconfig
-touch ~/.others/.gitingore
+# Empty for now
+cp -bf git/gitignore ${INSTALL_FOLDER}/.gitignore
 
 echo "Installing diff-so-fancy for improving diffs"
 curl -O https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
-cp -f diff-so-fancy ~/.others/diff-so-fancy
-chmod +x ~/.others/diff-so-fancy
+cp -f diff-so-fancy ${INSTALL_FOLDER}/diff-so-fancy
+chmod +x ${INSTALL_FOLDER}/diff-so-fancy
 
 echo "Enter your git user:"
 echo "Username: (between \" \")"
@@ -59,12 +77,14 @@ git config --global user.email $mail
 
 echo "Git config done"
 
+# Bash config
 echo "Including .bash_config at the end of .bashrc for non invasive configuration"
 echo "
 if [ -f ~/.bash_config ]; then
     . ~/.bash_config
 fi" >> ~/.bashrc
 
+# Log
 echo "Saving installation_log.txt"
 HASH=$(git rev-parse HEAD)
 echo $HASH >> installation_log.txt

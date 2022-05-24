@@ -1,0 +1,11 @@
+# Global gitignore with common files to ignore
+
+# NodeJS
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.*

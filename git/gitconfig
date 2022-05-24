@@ -10,6 +10,7 @@
     editor = vim
     excludesfile = ~/.others/.gitignore
     pager = "diff-so-fancy | less --tabs=4 -RFX"
+    hooksPath = ~/.others/githooks
 [color]
     ui = auto
     [color "branch"]
@@ -57,16 +58,16 @@
     # Git diff using less
     diff-std = diff
     
-    #Show tags for current commit
+    # Show tags for current commit
     wtag = describe --tags
     
     # Discard changes in a (list of) file(s) in working tree
     discard = checkout --
     
-    #Edits the commit message
+    # Edits the commit message
     amend = commit --amend
     
-    #Common branches
+    # Common branches
     cod = checkout develop
     coi = checkout integration
     com = checkout master
@@ -74,11 +75,10 @@
     dev = !git fetch --all && git checkout develop && git pull
     int = !git fetch --all && git checkout integration && git pull
     mas = !git fetch --all && git checkout master && git pull
-    arc = !git fetch --all && git checkout develop_architecture && git pull
-    arcb = git branch --list -a 'origin/architecture/*' --no-merged
-    ftb = git branch --list -a 'origin/feature/*' --no-merged
+    pro = !git fetch --all && git checkout production && git pull
+    ftb = !git branch --list -a 'origin/feature/*' --no-merged
     
-    #Quickly create feature branches 'feature/xxxx'
+    # Quickly create feature branches 'feature/xxxx'
     ft = "!f() { git checkout -b feature'/'\"$1\" ; }; f"
     
     #-------------------------
@@ -88,20 +88,20 @@
     # Discard changes in a (list of) file(s) in working tree
     discard = checkout --
     
-    #Removes local changes
+    # Removes local changes
     rh = reset --hard
 
-    #Resets everything on a given repository. You will lose all untracked, tracked, ignored and hidden files.
+    # Resets everything on a given repository. You will lose all untracked, tracked, ignored and hidden files.
     restore = !git clean -fxdf && git reset --hard && git checkout -f -- .
     restore-su = !git submodule foreach --recursive 'git clean -fdxf && git reset --hard && git checkout -f -- .'
     nuke = !git restore && git restore-su
     
-    #Undo things
+    # Undo things
     uncommit = reset --soft HEAD^
     unadd = reset HEAD
     unstage = reset HEAD
     
-    #Delete merged branches
+    # Delete merged branches
     dmerged = "git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     
     #------------------------
@@ -116,20 +116,20 @@
     suint = submodule foreach --recursive  'git fetch && git checkout integration && git pull'
     sumas = submodule foreach --recursive  'git fetch && git checkout master && git pull'
     
-    #Updated remote urls from gitmodules
+    # Updated remote urls from gitmodules
     ss = submodule sync
 
     #-----------------------
     #  Git logs             | 
     #-----------------------
     
-    #My default git log graph
+    # My default git log graph
     lg = !"git lg1"
     
-    #Git log listing files modified. To improve coloring.
+    # Git log listing files modified. To improve coloring.
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
 
-    #Git graph detailed and well formated
+    # Git graph detailed and well formated
     lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 
     # More complete form
@@ -150,11 +150,6 @@
     
     # ls-ignored -  list files that git has ignored.
     ls-ignored = ls-files --others --i --exclude-standard
-    
-    # temporally skipped: https://stackoverflow.com/a/66440906
-    skip = update-index --skip-worktree
-    skipped = !"git ls-files -v | grep ^S"
-    unskip = update-index --no-skip-worktree
 
     # Outputs diff of changes not in a comment block and ignoring whitespaces of a given dir or file
     diffh = ! "                      \
@@ -172,12 +167,17 @@
     
     stashes = stash list
     
-    #Index management
-    hide = update-index --assume-unchanged
-    unhide = update-index --no-assume-unchanged
-    hidden = !git ls-files -v|grep '^h'
-    
-    #Return the directory of the repository
+    # Index management: Better to use "skip"
+    # hide = update-index --assume-unchanged
+    # unhide = update-index --no-assume-unchanged
+    # hidden = !git ls-files -v|grep '^h'
+
+    # temporally skipped: https://stackoverflow.com/a/66440906
+    skip = update-index --skip-worktree
+    skipped = !"git ls-files -v | grep ^S"
+    unskip = update-index --no-skip-worktree
+
+    # Return the directory of the repository
     pwd = rev-parse --show-toplevel
     
     # Show our defined alias list
@@ -228,3 +228,4 @@
     
     
     #Inspiration: https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
+
