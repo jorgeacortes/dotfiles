@@ -151,6 +151,11 @@
     # ls-ignored -  list files that git has ignored.
     ls-ignored = ls-files --others --i --exclude-standard
     
+    # temporally skipped: https://stackoverflow.com/a/66440906
+    skip = git update-index --skip-worktree
+    skipped = !"git ls-files -v | grep ^S"
+    unskipp = git update-index --no-skip-worktree
+
     # Outputs diff of changes not in a comment block and ignoring whitespaces of a given dir or file
     diffh = ! "                      \
     f () {                           \
