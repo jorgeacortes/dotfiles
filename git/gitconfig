@@ -102,7 +102,7 @@
     unstage = reset HEAD
     
     # Delete merged branches
-    dmerged = "git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    dmerged = !"git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     
     #------------------------
     #  Submodule management |
