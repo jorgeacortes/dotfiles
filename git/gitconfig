@@ -53,7 +53,9 @@
     download = clone --depth=1
     # See changes between HEAD and previous commit. All files, and one file.
     diffc = diff HEAD^ HEAD
-    diffc1 = "!f() { git diff HEAD^:\"$1\" HEAD:\"$1\" ;}; f"
+    # See changes between an arbitrary commit and the previous.
+    diff1 = "!f() { git diff $1^1 $1 ;}; f"
+    # diffc1 = "!f() { git diff HEAD^:\"$1\" HEAD:\"$1\" ;}; f"
 
     # Git diff using less
     diff-std = diff
