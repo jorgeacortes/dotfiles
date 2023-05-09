@@ -104,8 +104,13 @@
     unstage = reset HEAD
     
     # Delete merged branches
-    dmerged = !"git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-    
+    # dmerged = !"git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    dmerged = !"git branch --merged | grep -v '\\*\\|master\\|main\\|develop' | xargs -n 1 git branch -d"
+    dmerged-force = !"git branch | grep -v '\\*\\|master\\|main\\|develop' | xargs -n 1 git branch -D"
+
+    # Clear history until today (useful for clearing local space): https://stackoverflow.com/questions/9819185/how-to-remove-local-git-history-after-a-commit
+    clear-local-history = !git fetch --depth=1 && git reflog expire --expire-unreachable=now --all && git gc --aggressive --prune=all
+
     #------------------------
     #  Submodule management |
     #------------------------
