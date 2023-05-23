@@ -51,6 +51,11 @@
     aa = add -A
     aaci = !git add -A && git commit
     download = clone --depth=1
+
+    rb = rebase
+    rbi = rebase -i
+    rbc = rebase --continue
+
     # See changes between HEAD and previous commit. All files, and one file.
     diffc = diff HEAD^ HEAD
     # See changes between an arbitrary commit and the previous.
@@ -68,6 +73,7 @@
     
     # Edits the commit message
     amend = commit --amend
+    amenda = commit --amend --reset-author
     
     # Common branches
     cod = checkout develop
