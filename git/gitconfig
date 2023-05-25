@@ -1,3 +1,16 @@
+# Git config
+# A git config with aliases for making git easier to use
+#
+# Inspiration: https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
+#
+# TODO / IDEAS
+#   - Launch a shell command from top level directory of the repository
+#
+
+[user]
+    # Global user. By default not set. Can be overriden in includeIf section
+    name = ""
+    email = not-set@users.noreply.github.com 
 [credential]
     # Remember login credentials (in seconds)
     helper = cache --timeout=3000
@@ -235,10 +248,13 @@
     add-alias = "!f() { [ $# = 3 ] && git config $1 alias.\"$2\" \"$3\" && return 0 || echo \"Usage: git add-(local|global)-alias <new alias> <original command>\" >&2 && return 1; }; f"
     add-global-alias = "!git add-alias --global"
     add-local-alias = "!git add-alias --local"
-    
-    #Launch a shell command from top level directory of the repository
-    #TODO
-    
-    
-    #Inspiration: https://github.com/GitAlias/gitalias/blob/master/gitalias.txt
 
+# Section include for adding local stuff
+[include]
+    path = ~/.local.gitconfig
+
+# Section to load server-specific configuration such as user information
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+    path = ~/.github.gitconfig
+
+# End section for appends when user git config --global xxxx
